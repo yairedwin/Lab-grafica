@@ -447,7 +447,7 @@ int main()
 		0.0f, 2.0f,
 		0.0f, 0.0f, 0.0f,
 		0.0f, -1.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
+		1.0f, 0.02f, 0.01f,
 		5.0f);
 	spotLightCount++;
 
@@ -513,25 +513,25 @@ int main()
 		spotLights[0].SetFlash(lowerLight, camera.getCameraDirection());
 
 
-		//matriz de la nave: flotando a 2.6 sobre el piso (el piso esta en y = -1); la luz de arriba, la spot de abajo y las flamas cuelgan de esta matriz
+		//matriz de la nave: flotando a 3.8 sobre el piso (el piso esta en y = -1, y el modelo esta centrado en su origen); la luz de arriba, la spot de abajo y las flamas cuelgan de esta matriz
 		naveM = glm::mat4(1.0);
-		naveM = glm::translate(naveM, glm::vec3(6.0f, 1.6f, -8.0f));
+		naveM = glm::translate(naveM, glm::vec3(6.0f, 2.8f, -8.0f));
 		naveM = glm::rotate(naveM, 30 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		naveM = glm::scale(naveM, glm::vec3(0.9f, 0.9f, 0.9f));
 
 		//luz puntual de la nave, arriba de la cabina (no esta en los motores)
-		posLuz = glm::vec3(naveM * glm::vec4(1.7f, 1.6f, 0.0f, 1.0f));
+		posLuz = glm::vec3(naveM * glm::vec4(1.7f, 1.04f, 0.0f, 1.0f));
 		pointLights[0] = PointLight(1.0f, 0.9f, 0.7f, 0.1f, 1.0f,
 			posLuz.x, posLuz.y, posLuz.z, 1.0f, 0.004f, 0.02f);
 		//luz de cada flama, justo atras de la tobera de su motor (en el modelo las toberas estan en x = -4.2 y los motores en z = 2.1 y -2.1)
-		posLuz = glm::vec3(naveM * glm::vec4(-4.9f, -0.1f, 2.1f, 1.0f));
+		posLuz = glm::vec3(naveM * glm::vec4(-4.9f, -0.66f, 2.1f, 1.0f));
 		pointLights[1] = PointLight(0.2f, 0.5f, 1.0f, 0.05f, 1.5f,
 			posLuz.x, posLuz.y, posLuz.z, 1.0f, 0.02f, 0.04f);
-		posLuz = glm::vec3(naveM * glm::vec4(-4.9f, -0.1f, -2.1f, 1.0f));
+		posLuz = glm::vec3(naveM * glm::vec4(-4.9f, -0.66f, -2.1f, 1.0f));
 		pointLights[2] = PointLight(0.3f, 0.6f, 1.0f, 0.1f, 1.8f,
 			posLuz.x, posLuz.y, posLuz.z, 1.0f, 0.01f, 0.03f);
 		//spot de la nave: debajo del casco, apuntando al piso
-		spotLights[1].SetFlash(glm::vec3(naveM * glm::vec4(0.5f, -0.9f, 0.0f, 1.0f)),
+		spotLights[1].SetFlash(glm::vec3(naveM * glm::vec4(0.5f, -1.46f, 0.0f, 1.0f)),
 			glm::normalize(glm::vec3(naveM * glm::vec4(0.0f, -1.0f, 0.0f, 0.0f))));
 
 		//información al shader de fuentes de iluminación
@@ -619,7 +619,7 @@ int main()
 		if (mainWindow.getmotor1())
 		{
 			flamaM = naveM;
-			flamaM = glm::translate(flamaM, glm::vec3(-6.0f, -0.1f, 2.1f)); //sale de la tobera hacia atras
+			flamaM = glm::translate(flamaM, glm::vec3(-6.0f, -0.66f, 2.1f)); //sale de la tobera hacia atras
 			flamaM = glm::rotate(flamaM, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f)); //la punta del plano apunta hacia atras (-x)
 			flamaM = glm::scale(flamaM, glm::vec3(1.0f, 3.6f, 1.0f));
 			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(flamaM));
@@ -628,7 +628,7 @@ int main()
 		if (mainWindow.getmotor2())
 		{
 			flamaM = naveM;
-			flamaM = glm::translate(flamaM, glm::vec3(-6.0f, -0.1f, -2.1f));
+			flamaM = glm::translate(flamaM, glm::vec3(-6.0f, -0.66f, -2.1f));
 			flamaM = glm::rotate(flamaM, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 			flamaM = glm::scale(flamaM, glm::vec3(1.0f, 3.6f, 1.0f));
 			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(flamaM));
